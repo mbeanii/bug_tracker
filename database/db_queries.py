@@ -1,62 +1,82 @@
 import sqlite3
-import json
-from jsonschema import validate
-from paths import BUGS_JSON_SCHEMA_PATH, USERS_JSON_SCHEMA_PATH
 
-def push_bug(conn: sqlite3.Connection, bug: dict) -> None:
-    """ Adds a bug to the bugs table
+def instantiate_table(conn: sqlite3.Connection, schema: dict, table_name: str) -> None:
+    """ Instantiates a db table
     
     Inputs:
         conn (sqlite3.Connection) : A sqlite3 connection object
-        bug  (dict)               : A dict following the bugs_schema
+        schema     (dict)         : A json schema dict
+        table_name (str)          : The desired table name
 
     Returns:
         Nothing
     
     Raises:
-        jsonschema.exceptions.ValidationError if bug does not follow bugs_schema
+        Nothing
     """
-    bugs_schema = None
-    with open(BUGS_JSON_SCHEMA_PATH) as f:
-        bugs_schema = json.loads(f.read())
-    validate(schema=bugs_schema, instance=[bug])
-
     c = conn.cursor()
-    query = f'''
-            INSERT INTO bugs ({str(list(bug.keys()))[1:-1]})
 
-                    VALUES
-                    ({str(list(bug.values()))[1:-1]})
-            '''
-    c.execute(query)
+    # Fetch properties from schema
+    keys = [[key] for key in schema["items"][0]["properties"].keys()]
 
+    # Format as columns for query
+    keys_str = str(keys)[1:-1].replace("'","")
+    
+    c.execute(f'''
+            CREATE TABLE IF NOT EXISTS {table_name}
+            ({keys_str})
+            ''')
+    conn.commit()    
 
-def push_user(conn: sqlite3.Connection, user: dict) -> None:
-    """ Adds a user to the users table
+def add_table_entry(conn: sqlite3.Connection, table_name: str, entry: dict) -> None:
+    """ Adds a db table entry (may be used to satisfy req #3/6)
     
     Inputs:
         conn (sqlite3.Connection) : A sqlite3 connection object
-        user  (dict)               : A user following the users_schema
+        table_name  (str)         : The nambe of a db table
+        entry  (dict)             : A single dict to be added
 
     Returns:
         Nothing
     
     Raises:
-        jsonschema.exceptions.ValidationError if user does not follow users_schema
+        Nothing
     """
-    users_schema = None
-    with open(USERS_JSON_SCHEMA_PATH) as f:
-        users_schema = json.loads(f.read())
-    validate(schema=users_schema, instance=[user])
+
+    entry_keys = list(entry.keys())
+    # Remove [] from list to format query
+    entry_keys_str = str(entry_keys)[1:-1]
+
+    entry_values = list(entry.values())
+    # Remove [] from list to format query
+    entry_values_str = str(entry_values)[1:-1]
 
     c = conn.cursor()
     query = f'''
-            INSERT INTO users ({str(list(user.keys()))[1:-1]})
+            INSERT INTO {table_name} ({entry_keys_str})
 
                     VALUES
-                    ({str(list(user.values()))[1:-1]})
+                    ({entry_values_str})
             '''
     c.execute(query)
+    return
+
+def get_table_titles(conn: sqlite3.Connection) -> list:
+    """ Fetches a list of table titles
+    
+    Inputs:
+        conn (sqlite3.Connection) : A sqlite3 connection object
+
+    Returns:
+        A list of string values - titles of db tables
+    
+    Raises:
+        Nothing
+    """
+    c = conn.cursor()
+    res = c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tuple_list = res.fetchall()
+    return [tuple[0] for tuple in tuple_list]
 
 
 def get_open_bugs(conn: sqlite3.Connection) -> list:
@@ -73,11 +93,39 @@ def get_open_bugs(conn: sqlite3.Connection) -> list:
     """
     c = conn.cursor()
     res = c.execute("SELECT title FROM bugs WHERE status='open'")
-    return res.fetchall()
+    tuple_list = res.fetchall()
+    return [tuple[0] for tuple in tuple_list]
 
 
 def get_bug_details_by_id(conn: sqlite3.Connection, id_: str) -> dict:
     """ Fetches bug details for an individual bug, per req #2
+    
+    Inputs:
+        conn (sqlite3.Connection) : A sqlite3 connection object
+        id_ (str)                 : A UUID
+
+    Returns:
+        A dictionary containing the following keys:
+            {
+                "title": "X",
+                "description": "Y",
+                "opened_on": "1970-01-01T00:00:00+00:00"
+            }
+    
+    Raises:
+        Nothing
+    """
+    c = conn.cursor()
+    res = c.execute(f"SELECT title, description, opened_on FROM bugs WHERE id='{id_}'")
+    results = res.fetchall()[0]
+    return {
+        "title": results[0],
+        "description": results[1],
+        "opened_on": results[2]
+    }
+
+def modify_bug_by_id(conn: sqlite3.Connection, id_: str) -> dict:
+    """ Changes one or more attributes for an individual bug, per req #4/5
     
     Inputs:
         conn (sqlite3.Connection) : A sqlite3 connection object
