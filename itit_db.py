@@ -27,6 +27,7 @@ class Database():
         self.table_titles = get_table_titles(self.conn)
     
     def __del__(self):
+        self.conn.commit()
         self.conn.close()
 
     def add_table(self, name: str, config_path, schema_path):

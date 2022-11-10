@@ -32,7 +32,7 @@ def add_table_entry(conn: sqlite3.Connection, table_name: str, entry: dict) -> N
     """ Adds a db table entry (may be used to satisfy req #3/6)
     
     Inputs:
-        conn (sqlite3.Connection) : A sqlite3 connection object
+        c (sqlite3.Cursor)        : A sqlite3 connection object
         table_name  (str)         : The nambe of a db table
         entry  (dict)             : A single dict to be added
 
