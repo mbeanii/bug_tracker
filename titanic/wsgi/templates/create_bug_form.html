@@ -1,0 +1,5 @@
+<form action="{{ url_for("create_bug")}}" method="post">
+    <p> To raise a bug, please supply the following: </p>
+    <input type="text" id="title" name="title" placeholder="title"> <br>
+    <input type="description" id="description" name="description" placeholder="description"> <br>
+    <button type="submit">Create</button>

@@ -1,0 +1,9 @@
+<form action="{{ url_for("assign_bug")}}" method="post">
+    <p> Hint:</p>
+    <p> Bug: d08e099e-6686-4a5a-ab43-0338b9adaf4b</p>
+    <p> User: 4a8596fe-cfbf-4855-bef9-cf34fadbd690</p>
+    <label for="bug_id">Bug ID:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="text" id="bug_id"name="bug_id" placeholder="bug_id"> <br>
+    <label for="owner_id">Owner ID:</label>
+    <input type="text" id="owner_id" name="owner_id" placeholder="owner_id"> <br>
+    <button type="submit">Assign Bug</button>

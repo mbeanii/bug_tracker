@@ -1,6 +1,7 @@
-from database import db
+from database.titanic_db import Titanic
 
 if __name__ == '__main__':
+    db = Titanic()
     c = db.conn.cursor()
 
     res = c.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -20,3 +21,14 @@ if __name__ == '__main__':
 
     print("Get bug details by id (d08e099e-6686-4a5a-ab43-0338b9adaf4b): ")
     print(db.get_bug_details_by_id("d08e099e-6686-4a5a-ab43-0338b9adaf4b"))
+
+
+    mods = {
+        "status": "closed",
+    }
+    bug_id = "d08e099e-6686-4a5a-ab43-0338b9adaf4b"
+    response = db.modify_bug_by_id(bug_id, mods)
+    if response:
+        print("Bug " + bug_id + " successfully closed.")
+    else:
+        print("Something went wrong while attempting to modify bug " + bug_id)

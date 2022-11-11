@@ -30,5 +30,13 @@
         "description": "Perhaps start locking the car and/or cargo hold",
         "status": "open",
         "owner_id": "96997019-e16e-499f-9053-33ab6e32ec34"
+    },
+    {
+        "id": "ff3618df-d605-4bef-8a95-b40291b28498",
+        "opened_on": "1912-08-05T00:00:00+00:00",
+        "title": "Lice",
+        "description": "Everyone on board has it. Everyone.",
+        "status": "open",
+        "owner_id": "96997019-e16e-499f-9053-33ab6e32ec34"
     }
 ]
