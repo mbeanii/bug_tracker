@@ -1,7 +1,42 @@
-<form action="{{ url_for("change_username")}}" method="post">
-    <p> Hint: Try 96997019-e16e-499f-9053-33ab6e32ec34</p>
-    <label for="owner_id">Owner ID:</label> <br>
-    <input type="text" id="owner_id" name="owner_id" placeholder="owner_id"> <br>
-    <label for="new_name">New Name:</label> <br>
-    <input type="text" id="new_name" name="new_name" placeholder="new_name"> <br>
-    <button type="submit">Change Username</button>
+<!DOCTYPE html>
+<html>
+    <style>
+    table, th, td {
+        border:1px solid black;
+    }
+    </style>
+    <head>
+        <title>Change Username</title>
+    </head>
+    <body>
+        <form action="{{ url_for("change_username")}}" method="post">
+
+        <h2>Current Users:</h2>
+        
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, value in result.items() %}
+            <tr>
+                <td> {{ key }} </td>
+                <td> {{ value }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+
+        <label for="owner_id">Owner ID:</label> <br>
+        <input type="text" id="owner_id" name="owner_id" placeholder="owner_id"> <br>
+        <label for="new_name">New Name:</label> <br>
+        <input type="text" id="new_name" name="new_name" placeholder="new_name"> <br>
+        <button type="submit">Change Username</button>
+    </body>
+</html>
+    

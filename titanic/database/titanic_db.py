@@ -5,8 +5,8 @@ from paths import DB_PATH, BUGS_CONFIG_PATH, BUGS_SCHEMA_PATH, USERS_CONFIG_PATH
 from os.path import exists
 
 class Table():
-    """ Class for managing table initialization values. """
-    def __init__(self, name: str, config_path, schema_path):
+    """ Class for validating table initialization configs. """
+    def __init__(self, name: str, config_path: str, schema_path: str):
         """Retrieves a config and schema and performs validation. """
         self.name = name
         self.config_path = config_path
@@ -158,33 +158,83 @@ class Database():
 class Titanic(Database):
     """ A top-level class for the Titanic Database """
     def __init__(self):
-
         init_tables = False
         if not exists(DB_PATH):
             init_tables = True
 
-        super(). __init__("titanic", DB_PATH)
+        super().__init__("titanic", DB_PATH)
 
         if init_tables:
             self.populate_table("bugs", BUGS_CONFIG_PATH, BUGS_SCHEMA_PATH)
             self.populate_table("users", USERS_CONFIG_PATH, USERS_SCHEMA_PATH)
 
-    def get_open_bugs(self) -> list:
-        """ Fetches a list of open bug titles, per req #1
+    def get_open_bugs(self) -> dict:
+        """ Fetches a dict of open bugs, as id:title, per req #1
         
         Inputs:
             None
 
         Returns:
-            A list of string values - titles of open bugs
+            A dict of string:string: "id":"title" of open bugs
         
         Raises:
             Nothing
         """
         c = self.conn.cursor()
-        res = c.execute("SELECT title FROM bugs WHERE status='open';")
-        tuple_list = res.fetchall()
-        return [tuple[0] for tuple in tuple_list]
+        res = c.execute("SELECT id, title FROM bugs WHERE status='open';")
+        results = res.fetchall()
+        return {id:title for (id, title) in results}
+
+    def get_open_bug_owners(self) -> list:
+        """ Fetches a list of open bugs as tuples: (id, title, owner_id)
+        
+        Inputs:
+            None
+
+        Returns:
+            A list of tuples: (id, title, owner_id)
+        
+        Raises:
+            Nothing
+        """
+        c = self.conn.cursor()
+        res = c.execute("SELECT id, title, owner_id FROM bugs WHERE status='open';")
+        results = res.fetchall()
+        return results
+
+    def get_all_bugs(self) -> dict:
+        """ Fetches a dict of all bugs, as id:title
+        
+        Inputs:
+            None
+
+        Returns:
+            A dict of string:string: "id":"title" of all bugs
+        
+        Raises:
+            Nothing
+        """
+        c = self.conn.cursor()
+        res = c.execute("SELECT id, title FROM bugs;")
+        results = res.fetchall()
+        return {id:title for (id, title) in results}
+
+    def get_all_users(self) -> dict:
+        """ Fetches a dict of all users, as id:name
+        
+        Inputs:
+            None
+
+        Returns:
+            A dict of string:string: "id":"name" of all users
+        
+        Raises:
+            Nothing
+        """
+        c = self.conn.cursor()
+        res = c.execute("SELECT id, name FROM users;")
+        results = res.fetchall()
+        return {id:user for (id, user) in results}
 
 
     def get_bug_details_by_id(self, id_: str) -> dict:

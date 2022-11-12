@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database</title>
+</head>
+<body>
+    <p> The <a href="https://docs.python.org/3/library/sqlite3.html">Python Sqlite3 library</a> provides a simple interface for creating/managing a Sqlite3 database. <br>
+    I chose Sqlite3 due to its ease of implementation, python compatibility, and abundant documentation. <br>
+    The database directory contains bug_tracker.db, tests.py, and titanic_db.py. The latter contains <br>
+    classes and methods for abstracting SQL database queries. The design of titanic_db.py is as follows:
+  </p>
+
+    <body>
+      <img src="{{url_for('static', filename='UML Diagram - Mermaid.png')}}" align="middle" alt="UML" style="width:800px;height:533px;">
+    </body>
+
+    <p> At the moment, the Table class is used to validate the json config against the json schema and then discarded (and could thus be <br>
+      replaced with a "validate_config" member function of the Database class). However, at least the schema would be useful to keep for <br>
+      validation of further additions to the db - users and bugs under the current design. (See <a href="#further_improvements">Further Improvements</a> below)<br />
+    </p>
+
+    <p> The wsgi is provided via Flask (which is also using Jinja in the background). Endpoints which interface with the db create a <br>
+      Titanic object whose constructor initializes the database if it does not exist. Once created, the Titanic object's <br>
+      methods are then used to retrieve and save data to the database in a pythonic way.
+    </p>
+
+    <p> A single simple API endpoint is provided: GET /api/open_bugs. It would be easy to expand this by taking some of the existing endpoints <br>
+      and refactoring them to accept/return json arguments.
+    </p>
+
+    <p> The current front-end was designed with requirement traceability as the #1 priority, which it achieves at the cost of UI/UX. <br>
+      I've envisioned a better design, but have not yet implemented it. See bullet 1 below. </p>
+
+    <h2 id="further_improvements">Further Improvements:</h2>
+    <ul>
+        <li>Implement the above mentioned UI overhaul as seen <a href="beauty">here</a> </li>
+        <li>Allow closing bugs, assigning users, etc. to be done using names rather than IDs</li>
+        <ul>
+          <li>Better yet, allow for selecting items by clicking on table rows and modifying values via dropdown selection</li>
+        </ul>
+        <li>Refactor the Database class to store the Tables used for initialization</li>
+        <ul>
+          <li>Use the tables' schema variables for validation of add_user and create_ticket dicts before adding to the db</li>
+        </ul>
+        <li>Combine bug_details_form.html and close_bug_form.html as the only difference is the page title and this could be parameterized.</a> </li>
+        <li>Expand the API</li>
+        <li>Host the application in <a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-flask.html">AWS Elastic Beanstalk</a></li>
+        <li>Register a DNS, "titanicdebugger.com" or "titanic.co.uk"</li>
+      </ul>
+</body>
+</html>

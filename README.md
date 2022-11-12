@@ -15,3 +15,7 @@ To build the package:
 To reinitialize the database:
 1) Delete database/bug_tracker.db
 2) Navigate to http://127.0.0.1:5000/open_bugs (or any other page that accesses the db)
+The database will prepopulate user and bug data from the respective
+json files stored in the schema directory.
+
+For a discussion of the design decisions made for this project, navigate to http://127.0.0.1:5000/design

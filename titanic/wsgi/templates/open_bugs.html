@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <style>
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
+<head>
+    <title>Bug Titles</title>
+</head>
+<body>
+    <p>Open Bugs: {{ open_bugs }}</p>
+
+    <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for key, value in result.items() %}
+         <tr>
+             <td> {{ key }} </td>
+             <td> {{ value }} </td>
+         </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</body>
+</html>

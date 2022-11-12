@@ -1,9 +1,63 @@
-<form action="{{ url_for("assign_bug")}}" method="post">
-    <p> Hint:</p>
-    <p> Bug: d08e099e-6686-4a5a-ab43-0338b9adaf4b</p>
-    <p> User: 4a8596fe-cfbf-4855-bef9-cf34fadbd690</p>
-    <label for="bug_id">Bug ID:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-    <input type="text" id="bug_id"name="bug_id" placeholder="bug_id"> <br>
-    <label for="owner_id">Owner ID:</label>
-    <input type="text" id="owner_id" name="owner_id" placeholder="owner_id"> <br>
-    <button type="submit">Assign Bug</button>
+<!DOCTYPE html>
+<html>
+    <style>
+    table, th, td {
+        border:1px solid black;
+    }
+    </style>
+    <head>
+        <title>Assign Bug</title>
+    </head>
+    <body>
+        <form action="{{ url_for("assign_bug")}}" method="post">
+
+        <h2>Bug Owners:</h2>
+        
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Owner ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for (id, title, owner_id) in bugs %}
+            <tr>
+                <td> {{ id }} </td>
+                <td> {{ title }} </td>
+                <td> {{ owner_id }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Users:</h2>
+        
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, value in users.items() %}
+            <tr>
+                <td> {{ key }} </td>
+                <td> {{ value }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+
+        <label for="bug_id">Bug ID:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="bug_id"name="bug_id" placeholder="bug_id"> <br>
+        <label for="owner_id">Owner ID:</label>
+        <input type="text" id="owner_id" name="owner_id" placeholder="owner_id"> <br>
+        <button type="submit">Assign Bug</button>
+    </body>
+</html>
+    

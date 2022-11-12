@@ -1,5 +1,39 @@
-<form action="{{ url_for("close_bug")}}" method="post">
-    <p> Hint: Try "d08e099e-6686-4a5a-ab43-0338b9adaf4b"</p>
-    <label for="bug_id">Bug ID:</label>
-    <input type="text" id="bug_id" name="bug_id" placeholder="bug_id">
-    <button type="submit">Close bug</button>
+<!DOCTYPE html>
+<html>
+    <style>
+    table, th, td {
+        border:1px solid black;
+    }
+    </style>
+    <head>
+        <title>Close Bug</title>
+    </head>
+    <body>
+        <form action="{{ url_for("close_bug")}}" method="post">
+
+        <h2>Open Bugs:</h2>
+        
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, value in result.items() %}
+            <tr>
+                <td> {{ key }} </td>
+                <td> {{ value }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+
+        <label for="bug_id">Bug ID:</label>
+        <input type="text" id="bug_id" name="bug_id" placeholder="bug_id">
+        <button type="submit">Close bug</button>
+    </body>
+</html>

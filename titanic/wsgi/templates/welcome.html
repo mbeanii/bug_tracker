@@ -4,8 +4,11 @@
 </head>
 <body>
   <p>Welcome to the Titanic bug tracker</p>
+  <body>
+      <img src="{{url_for('static', filename='titanic.jpg')}}" align="middle" alt="titanic">
+  </body>
   <p>Here you can: </p>
-  <a href="open_bugs">1) View the list of open bugs</a><br />
+  <a href="open_bugs">1) View the open bugs</a><br />
   <a href="bug_details">2) View the details of an individual bug</a><br />
   <a href="create_bug">3) Create a bug</a><br />
   <a href="close_bug">4) Close a bug</a><br />
@@ -14,7 +17,7 @@
   <a href="change_username">7) Change a user's name</a><br />
   <a href="beauty">8) Admire this beautiful web application</a><br />
   <a href="/api/open_bugs">9) Retrieve the list of open bugs via API </a><br />
-  <a href="/database">10) Learn about the database</a><br />
+  <a href="/design">10) Learn about the database and other design decisions. </a><br />
   <br />
 </body>
 </html>

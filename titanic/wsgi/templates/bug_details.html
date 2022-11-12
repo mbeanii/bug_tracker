@@ -9,13 +9,13 @@
         <title>Bug Details</title>
     </head>
     <body>
-        <form action="{{ url_for("bug_details")}}" method="post">
-        
+        <p>Bug Details: {{ bug_details }}</p>
+
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
+                <th>Key</th>
+                <th>Value</th>
             </tr>
             </thead>
             <tbody>
@@ -27,9 +27,5 @@
             {% endfor %}
             </tbody>
         </table>
-
-        <label for="bug_id">Bug ID:</label>
-        <input type="text" id="bug_id" name="bug_id" placeholder="bug_id">
-        <button type="submit">Get Details</button>
     </body>
 </html>
